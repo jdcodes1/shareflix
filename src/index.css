@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@theme {
+  /* Netflix exact brand colors - scraped from netflix.com */
+  --color-netflix-red: #E50914;
+  --color-netflix-red-hover: #F40612;
+  --color-netflix-bg: #000000;
+  --color-netflix-bg-light: #141414;
+  --color-netflix-bg-card: #181818;
+  --color-netflix-bg-card-hover: #232323;
+  --color-netflix-gray: #808080;
+  --color-netflix-gray-light: #B3B3B3;
+  --color-netflix-gray-dark: #333333;
+  --color-netflix-gray-medium: #454545;
+  --color-netflix-white-70: rgba(255, 255, 255, 0.7);
+  --color-netflix-white-50: rgba(255, 255, 255, 0.5);
+
+  /* Netflix exact font stack */
+  --font-family-netflix: 'Netflix Sans', 'Helvetica Neue', 'Segoe UI', Roboto, Ubuntu, sans-serif;
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: var(--font-family-netflix);
+    background-color: var(--color-netflix-bg);
+    color: white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: var(--color-netflix-bg);
+  }
+
+  /* Netflix typography scale */
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  /* Custom scrollbar - Netflix style */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #888;
+  }
+}
+
+/* Netflix button base styles */
+.btn-netflix {
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-netflix-primary {
+  background-color: var(--color-netflix-red);
+  color: white;
+}
+
+.btn-netflix-primary:hover {
+  background-color: var(--color-netflix-red-hover);
+}
+
+.btn-netflix-secondary {
+  background-color: rgba(109, 109, 110, 0.7);
+  color: white;
+}
+
+.btn-netflix-secondary:hover {
+  background-color: rgba(109, 109, 110, 0.4);
+}
+
+/* Horizontal scroll container */
+.scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: #555 transparent;
+}
+
+.scroll-container::-webkit-scrollbar {
+  height: 6px;
+}
