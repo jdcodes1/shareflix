@@ -2,8 +2,6 @@
 
 A Netflix-inspired shareable movie playlist application built as a portfolio project, featuring real movie data from TMDB.
 
-## TODO
-
 ## Features
 
 - **Browse Page** - Netflix-style hero section with featured movie, horizontal carousels organized by genre

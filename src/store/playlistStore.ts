@@ -10,6 +10,7 @@ import {
   isSupabaseConfigured,
 } from '../services/supabase';
 import { queryClient } from '../lib/queryClient';
+import { addMovieId, removeMovieId, mergePlaylists } from './playlistHelpers';
 
 // BroadcastChannel for real-time sync across browser tabs
 const CHANNEL_NAME = 'netflix-playlists-sync';
@@ -190,7 +191,7 @@ export const usePlaylistStore = create<PlaylistState>()(
           set((state) => ({
             playlists: state.playlists.map((p) =>
               p.id === playlistId && !p.movieIds.includes(movieId)
-                ? { ...p, movieIds: [...p.movieIds, movieId], updatedAt: Date.now() }
+                ? { ...p, movieIds: addMovieId(p.movieIds, movieId), updatedAt: Date.now() }
                 : p
             ),
           }));
@@ -213,7 +214,7 @@ export const usePlaylistStore = create<PlaylistState>()(
           set((state) => ({
             playlists: state.playlists.map((p) =>
               p.id === playlistId
-                ? { ...p, movieIds: p.movieIds.filter((id) => id !== movieId), updatedAt: Date.now() }
+                ? { ...p, movieIds: removeMovieId(p.movieIds, movieId), updatedAt: Date.now() }
                 : p
             ),
           }));
@@ -392,30 +393,9 @@ export const usePlaylistStore = create<PlaylistState>()(
             staleTime: 5 * 60 * 1000, // 5 minutes
           });
 
-          set((state) => {
-            const localMap = new Map(state.playlists.map((p) => [p.id, p]));
-            const cloudMap = new Map(cloudPlaylists.map((p) => [p.id, p]));
-            const merged: Playlist[] = [];
-
-            // For playlists in both, prefer the one with newer updatedAt
-            cloudPlaylists.forEach((cloud) => {
-              const local = localMap.get(cloud.id);
-              if (local && local.updatedAt > cloud.updatedAt) {
-                merged.push(local);
-              } else {
-                merged.push(cloud);
-              }
-            });
-
-            // Add local-only playlists (not in cloud)
-            state.playlists.forEach((local) => {
-              if (!cloudMap.has(local.id)) {
-                merged.push(local);
-              }
-            });
-
-            return { playlists: merged };
-          });
+          set((state) => ({
+            playlists: mergePlaylists(state.playlists, cloudPlaylists),
+          }));
         },
 
         migrateLocalPlaylistsToUser: async (userId: string) => {
